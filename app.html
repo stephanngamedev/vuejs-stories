@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>Vue JS</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app" class="container">
+      <table class="table table-striped">
+        <thead>
+          <th>#</th>
+          <th>Plot</th>
+          <th>Writer</th>
+          <th>Upvotes</th>
+          <th>Actions</th>
+        </thead>
+
+        <tr v-for="story in stories" is="story" :story="story" :key="story.id"></tr>
+      </table>
+      <p class="lead">
+        Here's a list of all your stories
+        <button @click="createStory()" class="btn btn-primary">
+          Add a new one?
+        </button>
+      </p>
+    </div>
+  </body>
+
+  <template id="template-story-raw">
+    <tr>
+      <td>{{ story.id }}</td>
+      <td>
+        <input v-if="story.editing" v-model="story.plot" class="form-control">
+        </input>
+        <span v-else>{{ story.plot }}</span>
+      </td>
+      <td>
+        <input v-if="story.editing" v-model="story.writer" class="form-control">
+        <span v-else>{{ story.writer }}</span>
+      </td>
+      <td>{{ story.upvotes }}</td>
+      <td>
+        <div v-if="!story.editing" class="btn-group">
+          <button @click="upvoteStory(story)" class="btn btn-primary">
+            Upvote
+          </button>
+          <button @click="editStory(story)" class="btn btn-default">
+            Edit
+          </button>
+          <button @click="deleteStory(story)" class="btn btn-danger">
+            Delete
+          </button>
+        </div>
+        <div v-else class="btn-group">
+          <button v-if="story.id" @click="updateStory(story)" class="btn btn-primary">
+            Update
+          </button>
+          <button v-else @click="storeStory(story)" class="btn btn-primary">
+            Create
+          </button>
+          <button @click="story.editing = false" class="btn btn-default">
+            Cancel
+          </button>
+        </div>
+      </td>
+    </tr>
+  </template>
+
+  <script src="vue.js"></script>
+  <script src="vue-resource.js"></script>
+  <script src="app.js"></script>
+</html>
